@@ -22,18 +22,14 @@ interactionR_crr <- function(model, exposure_pos = c(), ci.type = "delta", ci.le
   if (inherits(model, "crr")) {
     coef_model <- model$coef
     var_model <- model$var
-    
-    coef_model <- fg$coef
-    var_model <- fg$var
-    
   } else {
     coef_model <- coef(model)
     var_model <- vcov(model)
   }
   
-  beta1 <- rownames(summary(fg)$coef)[exposure_pos[1]]
-  beta2 <- rownames(summary(fg)$coef)[exposure_pos[2]]
-  beta3 <- rownames(summary(fg)$coef)[exposure_pos[3]]
+  beta1 <- rownames(summary(model)$coef)[exposure_pos[1]]
+  beta2 <- rownames(summary(model)$coef)[exposure_pos[2]]
+  beta3 <- rownames(summary(model)$coef)[exposure_pos[3]]
   
   beta1_1 <- exposure_pos[1]
   beta2_1 <- exposure_pos[2]
@@ -44,11 +40,11 @@ interactionR_crr <- function(model, exposure_pos = c(), ci.type = "delta", ci.le
   b1 <- as.numeric(coef_model[beta1])
   b2 <- as.numeric(coef_model[beta2])
   b3 <- as.numeric(coef_model[beta3])
-  se_vec <- summary(fg)$coef[,3]
+  se_vec <- summary(model)$coef[,3]
   v1 <- se_vec[beta1]^2
   v2 <- se_vec[beta2]^2
   v3 <- se_vec[beta3]^2
-  pvals <- summary(fg)$coef[,"p-value"]
+  pvals <- summary(model)$coef[,"p-value"]
   v_cov1 <- var_model[exposure_pos, exposure_pos, drop = FALSE]
   cov12 <- var_model[beta1_1, beta2_1]
   cov13 <- var_model[beta1_1, beta3_1]
